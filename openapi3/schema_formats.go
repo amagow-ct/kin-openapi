@@ -51,8 +51,14 @@ func init() {
 	DefineStringFormatValidator("byte", NewRegexpFormatValidator(FormatOfStringByte))
 	DefineStringFormatValidator("date", NewRegexpFormatValidator(FormatOfStringDate))
 	DefineStringFormatValidator("date-time", NewRegexpFormatValidator(FormatOfStringDateTime))
-	DefineIntegerFormatValidator("int32", NewRangeFormatValidator(int64(math.MinInt32), int64(math.MaxInt32)))
-	DefineIntegerFormatValidator("int64", NewRangeFormatValidator(int64(math.MinInt64), int64(math.MaxInt64)))
+	DefineIntegerFormatValidator(
+		"int32",
+		NewRangeFormatValidator(int64(math.MinInt32), int64(math.MaxInt32)),
+	)
+	DefineIntegerFormatValidator(
+		"int64",
+		NewRangeFormatValidator(int64(math.MinInt64), int64(math.MaxInt64)),
+	)
 }
 
 // DefineIPv4Format opts in ipv4 format validation on top of OAS 3 spec
@@ -71,7 +77,7 @@ type stringRegexpFormatValidator struct {
 
 func (s stringRegexpFormatValidator) Validate(value string) error {
 	if !s.re.MatchString(value) {
-		return fmt.Errorf(`string doesn't match pattern "%s"`, s.re.String())
+		return fmt.Errorf(`string %s doesn't match pattern "%s"`, value, s.re.String())
 	}
 	return nil
 }
